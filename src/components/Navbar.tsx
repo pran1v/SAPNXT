@@ -1,13 +1,31 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const logoVariants = {
         initial: { opacity: 0, x: -20 },
         animate: { opacity: 1, x: 0 },
         transition: { duration: 0.8, ease: "easeOut" }
     };
+
+    const menuVariants = {
+        closed: { opacity: 0, y: -20, pointerEvents: 'none' },
+        open: { opacity: 1, y: 0, pointerEvents: 'auto' }
+    };
+
+    const navLinks = [
+        { name: 'Home', href: '#hero' },
+        { name: 'Services', href: '#services' },
+        { name: 'About', href: '#about' },
+        { name: 'Contact', href: '#contact' }
+    ];
+
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
         <nav className="glass" style={{
@@ -17,7 +35,10 @@ export default function Navbar() {
             right: 0,
             zIndex: 1000,
             padding: '1rem 0',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            height: 'var(--nav-height)',
+            display: 'flex',
+            alignItems: 'center'
         }}>
             <div style={{
                 display: 'flex',
@@ -36,14 +57,18 @@ export default function Navbar() {
                         display: 'flex',
                         flexDirection: 'column',
                         cursor: 'pointer',
-                        userSelect: 'none'
+                        userSelect: 'none',
+                        zIndex: 1001
                     }}
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        setIsMenuOpen(false);
+                    }}
                     whileHover={{ scale: 1.02 }}
                 >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
                         <span style={{
-                            fontSize: '1.8rem',
+                            fontSize: 'clamp(1.2rem, 4vw, 1.8rem)',
                             fontWeight: 800,
                             color: 'white',
                             letterSpacing: '-1px'
@@ -51,7 +76,7 @@ export default function Navbar() {
                         <div style={{
                             display: 'flex',
                             alignItems: 'center',
-                            fontSize: '1.8rem',
+                            fontSize: 'clamp(1.2rem, 4vw, 1.8rem)',
                             fontWeight: 800,
                             background: 'linear-gradient(90deg, #008fd3 0%, #00b4ff 100%)',
                             WebkitBackgroundClip: 'text',
@@ -59,8 +84,8 @@ export default function Navbar() {
                         }}>
                             NXT
                             <svg
-                                width="24"
-                                height="24"
+                                width="20"
+                                height="20"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 style={{ marginLeft: '4px', filter: 'drop-shadow(0 0 5px rgba(0, 180, 255, 0.5))' }}
@@ -76,7 +101,7 @@ export default function Navbar() {
                         </div>
                     </div>
                     <span style={{
-                        fontSize: '0.65rem',
+                        fontSize: 'clamp(0.5rem, 1.5vw, 0.65rem)',
                         fontWeight: 600,
                         color: 'var(--text-muted)',
                         letterSpacing: '4px',
@@ -87,13 +112,72 @@ export default function Navbar() {
                     </span>
                 </motion.div>
 
-                <div className="links" style={{ display: 'flex', gap: '2.5rem', fontWeight: 500 }}>
-                    <a href="#hero" className="nav-link">Home</a>
-                    <a href="#services" className="nav-link">Services</a>
-                    <a href="#about" className="nav-link">About</a>
-                    <a href="#contact" className="nav-link">Contact</a>
+                {/* Desktop Links */}
+                <div className="links desktop-only" style={{ display: 'flex', gap: '2.5rem', fontWeight: 500 }}>
+                    {navLinks.map((link) => (
+                        <a key={link.name} href={link.href} className="nav-link">{link.name}</a>
+                    ))}
                 </div>
+
+                {/* Mobile Menu Toggle */}
+                <div className="mobile-only" style={{ zIndex: 1001 }}>
+                    <button onClick={toggleMenu} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}>
+                        {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                </div>
+
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={menuVariants}
+                            style={{
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100vh',
+                                background: 'rgba(10, 12, 16, 0.98)',
+                                backdropFilter: 'blur(20px)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: '2rem',
+                                zIndex: 1000
+                            }}
+                        >
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    style={{
+                                        fontSize: '2rem',
+                                        fontWeight: 700,
+                                        color: 'white',
+                                        textDecoration: 'none'
+                                    }}
+                                >
+                                    {link.name}
+                                </a>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
+
+            <style jsx>{`
+                @media (max-width: 768px) {
+                    .desktop-only { display: none !important; }
+                }
+                @media (min-width: 769px) {
+                    .mobile-only { display: none !important; }
+                }
+            `}</style>
         </nav>
     );
 }
