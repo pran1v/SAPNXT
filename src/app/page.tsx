@@ -231,7 +231,7 @@ export default function Home() {
 
             <div style={{ marginBottom: '2.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
               <p style={{ marginBottom: '0.5rem' }}>📧 info@sapnxt.com</p>
-              <p style={{ lineHeight: 1.4 }}>📍 Darbhanga, Bihar, India</p>
+              <p style={{ lineHeight: 1.4 }}>📍 82/89, NEAR INDU NIVASH, POSANPURA, Kabirchak, Darbhanga, Bihar, India - 846009</p>
             </div>
 
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
