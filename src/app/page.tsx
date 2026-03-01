@@ -1,9 +1,10 @@
-'use client';
-
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Cloud, Zap, BrainCircuit, Bot, Database, ArrowRight } from 'lucide-react';
+import { Cpu, Cloud, Zap, BrainCircuit, Bot, Database, ArrowRight, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Home() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -234,12 +235,104 @@ export default function Home() {
               <p style={{ lineHeight: 1.4 }}>📍 82/89, NEAR INDU NIVASH, POSANPURA, Kabirchak, Darbhanga, Bihar, India - 846009</p>
             </div>
 
-            <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <input type="text" placeholder="Name" className="glass" style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', color: 'white', background: 'rgba(255,255,255,0.05)' }} />
-              <input type="email" placeholder="Email" className="glass" style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', color: 'white', background: 'rgba(255,255,255,0.05)' }} />
-              <textarea placeholder="Project Details" className="glass" style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', height: '120px', color: 'white', background: 'rgba(255,255,255,0.05)' }}></textarea>
-              <button className="btn-primary" style={{ width: '100%', padding: '1rem' }}>Send Message</button>
-            </form>
+            {submitStatus === 'success' ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{ padding: '2rem', background: 'rgba(0, 255, 0, 0.05)', borderRadius: '16px', border: '1px solid rgba(0, 255, 0, 0.2)' }}
+              >
+                <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
+                <h3 style={{ color: '#4ade80', marginBottom: '1rem' }}>Message Sent!</h3>
+                <p style={{ color: 'var(--text-secondary)' }}>Thank you for reaching out. We'll get back to you shortly.</p>
+                <button
+                  onClick={() => setSubmitStatus('idle')}
+                  className="btn-secondary"
+                  style={{ marginTop: '1.5rem', background: 'transparent', border: '1px solid var(--border-primary)', color: 'white', padding: '0.5rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
+                >
+                  Send Another
+                </button>
+              </motion.div>
+            ) : (
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsSubmitting(true);
+                  setSubmitStatus('idle');
+
+                  const formData = new FormData(e.currentTarget);
+                  formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
+                  formData.append("subject", "New Contact Form Submission - SAPNXT");
+                  formData.append("from_name", "SAPNXT Website");
+
+                  try {
+                    const response = await fetch("https://api.web3forms.com/submit", {
+                      method: "POST",
+                      body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                      setSubmitStatus('success');
+                      (e.target as HTMLFormElement).reset();
+                    } else {
+                      setSubmitStatus('error');
+                    }
+                  } catch (error) {
+                    setSubmitStatus('error');
+                  } finally {
+                    setIsSubmitting(false);
+                  }
+                }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+              >
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Your Name"
+                  className="glass"
+                  style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', color: 'white', background: 'rgba(255,255,255,0.05)' }}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Business Email"
+                  className="glass"
+                  style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', color: 'white', background: 'rgba(255,255,255,0.05)' }}
+                />
+                <textarea
+                  name="message"
+                  required
+                  placeholder="Tell us about your project"
+                  className="glass"
+                  style={{ padding: '0.8rem 1.2rem', borderRadius: '10px', border: '1px solid var(--border-primary)', height: '120px', color: 'white', background: 'rgba(255,255,255,0.05)' }}
+                ></textarea>
+
+                {submitStatus === 'error' && (
+                  <div style={{ color: '#f87171', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+                    <AlertCircle className="w-4 h-4" /> Something went wrong. Please try again.
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary"
+                  style={{ width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" /> Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
+                </button>
+              </form>
+            )}
+
           </motion.div>
         </div>
       </section>
