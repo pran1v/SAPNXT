@@ -155,16 +155,21 @@ export default function Navbar() {
                                 zIndex: 1000
                             }}
                         >
-                            {navLinks.map((link) => (
+                            {navLinks.map((link, idx) => (
                                 <a
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsMenuOpen(false)}
                                     style={{
-                                        fontSize: '2rem',
-                                        fontWeight: 700,
-                                        color: 'white',
-                                        textDecoration: 'none'
+                                        fontSize: '1.3rem',
+                                        fontWeight: 600,
+                                        color: idx === 0 ? 'white' : 'rgba(255,255,255,0.8)',
+                                        textDecoration: 'none',
+                                        padding: '0.6rem 0',
+                                        borderBottom: '1px solid rgba(255,255,255,0.07)',
+                                        width: '80%',
+                                        textAlign: 'center',
+                                        transition: 'color 0.2s',
                                     }}
                                 >
                                     {link.name}
