@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Linkedin } from 'lucide-react';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,10 +19,11 @@ export default function Navbar() {
     };
 
     const navLinks = [
-        { name: 'Home', href: '#hero' },
-        { name: 'Services', href: '#services' },
-        { name: 'About', href: '#about' },
-        { name: 'Contact', href: '#contact' }
+        { name: 'Home', href: '/#hero' },
+        { name: 'Services', href: '/#services' },
+        { name: 'About', href: '/#about' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Contact', href: '/#contact' }
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -113,10 +114,13 @@ export default function Navbar() {
                 </motion.div>
 
                 {/* Desktop Links */}
-                <div className="links desktop-only" style={{ display: 'flex', gap: '2.5rem', fontWeight: 500 }}>
+                <div className="links desktop-only" style={{ display: 'flex', gap: '2.5rem', fontWeight: 500, alignItems: 'center' }}>
                     {navLinks.map((link) => (
                         <a key={link.name} href={link.href} className="nav-link">{link.name}</a>
                     ))}
+                    <a href="https://linkedin.com/company/sapnxt" target="_blank" rel="noopener noreferrer" className="nav-link" style={{ display: 'flex', alignItems: 'center' }}>
+                        <Linkedin size={20} />
+                    </a>
                 </div>
 
                 {/* Mobile Menu Toggle */}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Cloud, Zap, BrainCircuit, Bot, Database, ArrowRight, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Cpu, Cloud, Zap, BrainCircuit, Bot, Database, ArrowRight, CheckCircle, AlertCircle, Loader2, Linkedin } from 'lucide-react';
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -172,7 +172,98 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BTP Visual Section */}
+      {/* Case Studies Section */}
+      <section id="case-studies" style={{ padding: 'var(--section-padding)', background: 'var(--bg-secondary)' }}>
+        <div className="container">
+          <motion.h2 {...fadeInUp} style={{ textAlign: 'center', marginBottom: '4rem' }}>Success Stories</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {[
+              {
+                title: 'Global Logistics Integration',
+                client: 'Fortune 500 Logistics',
+                desc: 'Streamlined cross-border operations using SAP BTP Integration Suite, reducing processing time by 40%.',
+                tags: ['Integration Suite', 'HANA Cloud']
+              },
+              {
+                title: 'AI-Driven Supply Chain',
+                client: 'Manufacturing Leader',
+                desc: 'Implemented SAP AI Core to predict maintenance needs, saving $2M in annual downtime costs.',
+                tags: ['AI Core', 'Business AI']
+              },
+              {
+                title: 'Financial Analytics Cloud',
+                client: 'Banking Group',
+                desc: 'Migrated legacy reporting to SAP Analytics Cloud, providing real-time visibility across 12 regions.',
+                tags: ['SAC', 'BTP']
+              }
+            ].map((study, i) => (
+              <motion.div
+                key={i}
+                className="glass"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                style={{ padding: '2rem', borderRadius: '24px', border: '1px solid var(--border-primary)' }}
+              >
+                <span style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', fontWeight: 600 }}>{study.client}</span>
+                <h3 style={{ margin: '0.5rem 0 1rem', fontSize: '1.4rem' }}>{study.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem' }}>{study.desc}</p>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {study.tags.map(tag => (
+                    <span key={tag} style={{ fontSize: '0.7rem', padding: '0.3rem 0.8rem', background: 'rgba(0,143,211,0.1)', borderRadius: '100px', border: '1px solid var(--border-accent)' }}>{tag}</span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section id="team" style={{ padding: 'var(--section-padding)' }}>
+        <div className="container">
+          <motion.div {...fadeInUp} style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2>Meet Our <span style={{ color: 'var(--accent-primary)' }}>Experts</span></h2>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '1rem auto' }}>Combining decades of SAP experience with modern AI capabilities.</p>
+          </motion.div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '3rem' }}>
+            {[
+              { name: 'Pranav!', role: 'Founder & Principal Consultant', bio: 'SAP BTP Architect with 10+ years of experience in enterprise digital transformation.', icon: <Bot className="w-12 h-12" /> },
+              { name: 'Varun Kumar', role: 'Head of Business AI', bio: 'Specialist in Generative AI and SAP AI Core implementation for complex business processes.', icon: <BrainCircuit className="w-12 h-12" /> },
+              { name: 'S. Kumar', role: 'Integration Lead', bio: 'Expert in SAP Integration Suite and legacy system modernization.', icon: <Cpu className="w-12 h-12" /> }
+            ].map((member, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                style={{ textAlign: 'center' }}
+              >
+                <div style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  background: 'var(--grad-primary)',
+                  margin: '0 auto 1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  boxShadow: '0 0 20px var(--accent-glow)'
+                }}>
+                  {member.icon}
+                </div>
+                <h3 style={{ marginBottom: '0.2rem' }}>{member.name}</h3>
+                <p style={{ color: 'var(--accent-secondary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '1rem' }}>{member.role}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.5 }}>{member.bio}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section style={{ padding: 'var(--section-padding)', backgroundColor: 'var(--bg-secondary)' }}>
         <div className="container" style={{
           display: 'grid',
@@ -234,8 +325,14 @@ export default function Home() {
 
             <div style={{ marginBottom: '2.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
               <p style={{ marginBottom: '0.5rem' }}>📧 info@sapnxt.com</p>
-              <p style={{ lineHeight: 1.4 }}>📍 82/89, NEAR INDU NIVASH, POSANPURA, Kabirchak, Darbhanga, Bihar, India - 846009</p>
+              <p style={{ lineHeight: 1.4, marginBottom: '1.5rem' }}>📍 82/89, NEAR INDU NIVASH, POSANPURA, Kabirchak, Darbhanga, Bihar, India - 846009</p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', opacity: 0.6 }}>
+                <a href="https://linkedin.com/company/sapnxt" target="_blank" rel="noopener noreferrer" className="nav-link"><Linkedin size={20} /></a>
+              </div>
             </div>
+
+            {/* reCAPTCHA Script */}
+            <script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`} async defer></script>
 
             {submitStatus === 'success' ? (
               <motion.div
@@ -267,6 +364,18 @@ export default function Home() {
                   formData.append("from_name", "SAPNXT Website");
 
                   try {
+                    // reCAPTCHA v3
+                    const gogleRecaptcha = (window as any).grecaptcha;
+                    if (gogleRecaptcha) {
+                      await new Promise<void>((resolve) => {
+                        gogleRecaptcha.ready(async () => {
+                          const token = await gogleRecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'submit' });
+                          formData.append("g-recaptcha-response", token);
+                          resolve();
+                        });
+                      });
+                    }
+
                     const response = await fetch("https://api.web3forms.com/submit", {
                       method: "POST",
                       body: formData
