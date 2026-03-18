@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Cloud, Zap, BrainCircuit, Bot, Database, ArrowRight, CheckCircle, AlertCircle, Loader2, Linkedin } from 'lucide-react';
+import { Cloud, Zap, BrainCircuit, Database, CheckCircle, AlertCircle, Loader2, Linkedin } from 'lucide-react';
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +54,7 @@ export default function Home() {
             <p style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', color: 'var(--text-secondary)', marginBottom: '3rem', maxWidth: '600px' }}>
               SAPNXT Solution delivers cutting-edge SAP BTP and Business AI integrations to drive your digital transformation.
             </p>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <div className="hero-buttons">
               <button
                 className="btn-primary"
                 onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
@@ -220,49 +220,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section id="team" style={{ padding: 'var(--section-padding)' }}>
-        <div className="container">
-          <motion.div {...fadeInUp} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2>Meet Our <span style={{ color: 'var(--accent-primary)' }}>Experts</span></h2>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '1rem auto' }}>Combining decades of SAP experience with modern AI capabilities.</p>
-          </motion.div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '3rem' }}>
-            {[
-              { name: 'Pranav!', role: 'Founder & Principal Consultant', bio: 'SAP BTP Architect with 10+ years of experience in enterprise digital transformation.', icon: <Bot className="w-12 h-12" /> },
-              { name: 'Varun Kumar', role: 'Head of Business AI', bio: 'Specialist in Generative AI and SAP AI Core implementation for complex business processes.', icon: <BrainCircuit className="w-12 h-12" /> },
-              { name: 'S. Kumar', role: 'Integration Lead', bio: 'Expert in SAP Integration Suite and legacy system modernization.', icon: <Cpu className="w-12 h-12" /> }
-            ].map((member, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                style={{ textAlign: 'center' }}
-              >
-                <div style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  background: 'var(--grad-primary)',
-                  margin: '0 auto 1.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'white',
-                  boxShadow: '0 0 20px var(--accent-glow)'
-                }}>
-                  {member.icon}
-                </div>
-                <h3 style={{ marginBottom: '0.2rem' }}>{member.name}</h3>
-                <p style={{ color: 'var(--accent-secondary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '1rem' }}>{member.role}</p>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.5 }}>{member.bio}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       <section style={{ padding: 'var(--section-padding)', backgroundColor: 'var(--bg-secondary)' }}>
         <div className="container" style={{
@@ -273,7 +231,7 @@ export default function Home() {
         }}>
           <motion.div {...fadeInUp}>
             <h2 style={{ fontSize: '2.2rem', marginBottom: '2rem' }}>Elevate your Business with <span style={{ color: 'var(--accent-primary)' }}>SAP BTP</span></h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="stat-card-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div className="stat-card">
                 <h4 style={{ fontSize: '1.8rem', color: 'var(--accent-primary)' }}>100%</h4>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Cloud Native</p>
@@ -331,9 +289,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* reCAPTCHA Script */}
-            <script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`} async defer></script>
-
             {submitStatus === 'success' ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -359,23 +314,13 @@ export default function Home() {
                   setSubmitStatus('idle');
 
                   const formData = new FormData(e.currentTarget);
-                  formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
+                  // Fallback to hardcoded key so form works in production even if env var is not set
+                  const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '4b8d308d-7f28-4d2b-9bb7-d83d1b8ce393';
+                  formData.append("access_key", accessKey);
                   formData.append("subject", "New Contact Form Submission - SAPNXT");
                   formData.append("from_name", "SAPNXT Website");
 
                   try {
-                    // reCAPTCHA v3
-                    const gogleRecaptcha = (window as any).grecaptcha;
-                    if (gogleRecaptcha) {
-                      await new Promise<void>((resolve) => {
-                        gogleRecaptcha.ready(async () => {
-                          const token = await gogleRecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'submit' });
-                          formData.append("g-recaptcha-response", token);
-                          resolve();
-                        });
-                      });
-                    }
-
                     const response = await fetch("https://api.web3forms.com/submit", {
                       method: "POST",
                       body: formData
@@ -387,9 +332,11 @@ export default function Home() {
                       setSubmitStatus('success');
                       (e.target as HTMLFormElement).reset();
                     } else {
+                      console.error('Web3Forms error:', data);
                       setSubmitStatus('error');
                     }
                   } catch (error) {
+                    console.error('Form submission error:', error);
                     setSubmitStatus('error');
                   } finally {
                     setIsSubmitting(false);
