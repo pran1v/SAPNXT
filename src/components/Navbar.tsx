@@ -33,7 +33,7 @@ export default function Navbar() {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     return (
-        <nav className="glass" style={{
+        <nav style={{
             position: 'fixed',
             top: 0,
             left: 0,
@@ -43,7 +43,11 @@ export default function Navbar() {
             transition: 'all 0.3s ease',
             height: 'var(--nav-height)',
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            background: 'rgba(8, 10, 14, 0.85)',
+            backdropFilter: 'blur(32px)',
+            WebkitBackdropFilter: 'blur(32px)',
+            borderBottom: '1px solid var(--border-primary)'
         }}>
             <div style={{
                 display: 'flex',
