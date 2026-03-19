@@ -1,8 +1,8 @@
 :root {
   /* Colors - Premium SAP-inspired Palette */
-  --bg-primary: #0a0c10;
-  --bg-secondary: #0f1218;
-  --bg-glass: rgba(20, 24, 31, 0.7);
+  --bg-primary: #080a0e;
+  --bg-secondary: #0d1016;
+  --bg-glass: rgba(20, 24, 31, 0.5);
 
   --accent-primary: #008fd3;
   --accent-secondary: #00b4ff;
@@ -12,8 +12,9 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  --border-primary: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(0, 143, 211, 0.25);
+  --border-primary: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(0, 143, 211, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.08);
 
   --grad-primary: linear-gradient(135deg, #008fd3 0%, #00b4ff 100%);
   --grad-dark: linear-gradient(180deg, #14181f 0%, #0a0c10 100%);
@@ -32,13 +33,14 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-jakarta), 'Inter', -apple-system, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
   padding-top: var(--nav-height);
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-outfit), sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
@@ -51,10 +53,42 @@ a {
 
 /* ── Glass ── */
 .glass {
-  background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-primary);
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%), var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.25);
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ── Magic Conic Spinning Border ── */
+.magic-border {
+  position: relative;
+  border: none;
+}
+.magic-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle), transparent 50%, var(--accent-secondary) 80%, #e879f9 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: glow-spin 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes glow-spin {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
 }
 
 /* ── Container ── */
@@ -86,10 +120,23 @@ a {
   border: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: 0.6s ease-in-out;
+}
+.btn-primary:hover::after {
+  left: 150%;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,143,211,0.35);
+  box-shadow: 0 12px 28px rgba(0,143,211,0.45);
 }
 
 .btn-outline {
@@ -142,6 +189,43 @@ a {
 /* ────────────────────────────────────────────
    HERO
 ──────────────────────────────────────────── */
+.hero-grid-bg {
+  position: relative;
+  background-color: var(--bg-primary);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center top;
+}
+.hero-grid-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, transparent 20%, var(--bg-primary) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--accent-secondary) 0%,
+    #ffffff 20%,
+    var(--accent-secondary) 40%,
+    #e879f9 60%,
+    var(--accent-secondary) 80%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -154,6 +238,12 @@ a {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.5px;
+  animation: badgeGlow 4s infinite alternate ease-in-out;
+}
+
+@keyframes badgeGlow {
+  0% { box-shadow: 0 0 0 rgba(0, 180, 255, 0); }
+  100% { box-shadow: 0 0 16px rgba(0, 180, 255, 0.3); }
 }
 
 .hero-buttons {
@@ -185,7 +275,11 @@ a {
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.35;
-  animation: orbFloat linear infinite;
+  animation: orbFloat linear infinite, orbPulse 4s ease-in-out infinite alternate;
+}
+@keyframes orbPulse {
+  0% { opacity: 0.25; transform: scale(0.95); }
+  100% { opacity: 0.45; transform: scale(1.05); }
 }
 .orb-1 {
   width: 500px; height: 500px;

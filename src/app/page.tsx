@@ -122,11 +122,10 @@ export default function Home() {
     <div className="homepage">
 
       {/* ── HERO ── */}
-      <section id="hero" className="hero-section" style={{
+      <section id="hero" className="hero-section hero-grid-bg" style={{
         minHeight: '90vh',
         display: 'flex',
         alignItems: 'center',
-        background: 'radial-gradient(ellipse at 15% 40%, rgba(0,143,211,0.18) 0%, transparent 55%), radial-gradient(ellipse at 85% 65%, rgba(124,58,237,0.12) 0%, transparent 50%), radial-gradient(ellipse at 60% 10%, rgba(232,121,249,0.08) 0%, transparent 45%), #0a0c10',
         position: 'relative',
         overflow: 'hidden',
         padding: '2rem 0',
@@ -158,7 +157,7 @@ export default function Home() {
 
             <h1 style={{ fontSize: 'clamp(2.4rem, 7vw, 5rem)', lineHeight: 1.05, marginBottom: '1.8rem', marginTop: '1.2rem' }}>
               Architecting the{' '}
-              <span className="gradient-text">Future</span>{' '}
+              <span className="shimmer-text" style={{ fontWeight: 800 }}>Future</span>{' '}
               of Enterprise
             </h1>
             <p style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', color: 'var(--text-secondary)', marginBottom: '3rem', maxWidth: '640px', lineHeight: 1.7 }}>
@@ -233,10 +232,10 @@ export default function Home() {
                 key={tech.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -8, boxShadow: `0 24px 48px ${tech.glow}` }}
+                whileHover={{ scale: 1.02, y: -8, boxShadow: `0 28px 56px ${tech.glow}` }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="tech-card glass"
+                className="tech-card glass magic-border"
               >
                 <div className="tech-card-header">
                   <div className="tech-icon-wrap" style={{ background: `${tech.color}18`, boxShadow: `0 0 20px ${tech.glow}` }}>
@@ -285,10 +284,10 @@ export default function Home() {
                 key={tech.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{ y: -6, boxShadow: `0 28px 56px ${tech.glow}` }}
+                whileHover={{ scale: 1.03, y: -6, boxShadow: `0 32px 64px ${tech.glow}` }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.12 }}
-                className="ai-card glass"
+                className="ai-card glass magic-border"
               >
                 <div className="ai-card-glow" style={{ background: `radial-gradient(circle at top left, ${tech.glow} 0%, transparent 60%)` }} aria-hidden="true" />
                 <div className="ai-icon-wrap" style={{ background: `${tech.color}15`, boxShadow: `0 0 30px ${tech.glow}` }}>
@@ -349,9 +348,10 @@ export default function Home() {
                 key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.02, y: -4, boxShadow: `0 20px 40px ${item.color}25` }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="connect-card glass"
+                className="connect-card glass magic-border"
               >
                 <div className="connect-step" style={{ color: item.color }}>{item.step}</div>
                 <div className="connect-icon" style={{ color: item.color, background: `${item.color}15` }}>{item.icon}</div>
@@ -444,12 +444,12 @@ export default function Home() {
             ].map((study, i) => (
               <motion.div
                 key={i}
-                className="case-card glass"
+                className="case-card glass magic-border"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -6 }}
+                whileHover={{ scale: 1.02, y: -6, boxShadow: `0 24px 48px rgba(0, 143, 211, 0.15)` }}
               >
                 <div className="case-metric">
                   <span className="metric-value gradient-text">{study.metric}</span>
@@ -474,7 +474,7 @@ export default function Home() {
         <div className="container" style={{ maxWidth: '780px' }}>
           <motion.div
             {...fadeInUp}
-            className="glass contact-card"
+            className="glass contact-card magic-border"
           >
             <p className="section-eyebrow" style={{ textAlign: 'center' }}>Let's Build Together</p>
             <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', marginBottom: '1.5rem', textAlign: 'center' }}>

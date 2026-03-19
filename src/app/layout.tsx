@@ -1,11 +1,12 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import CookieBanner from '@/components/CookieBanner';
 import Link from 'next/link';
 
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
+const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta' });
 
 export const metadata = {
   title: 'SAPNXT Solution | Enterprise SAP BTP & AI Excellence',
@@ -19,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>
+      <body className={`${outfit.variable} ${jakarta.variable}`}>
         <Navbar />
         <main>{children}</main>
         <footer className="py-12 glass mt-20" style={{ padding: '4rem 0' }}>
