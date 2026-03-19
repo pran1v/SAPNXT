@@ -29,9 +29,9 @@ export default function CookieBanner() {
                     style={{
                         position: 'fixed',
                         bottom: '2rem',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: 'calc(100% - 4rem)',
+                        left: '1rem',
+                        right: '1rem',
+                        margin: '0 auto',
                         maxWidth: '600px',
                         padding: '1.5rem',
                         borderRadius: '20px',

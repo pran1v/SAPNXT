@@ -3,9 +3,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X, Linkedin } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
 
     const logoVariants = {
         initial: { opacity: 0, x: -20 },
@@ -63,7 +66,11 @@ export default function Navbar() {
                         zIndex: 1001
                     }}
                     onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (pathname === '/') {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else {
+                            router.push('/');
+                        }
                         setIsMenuOpen(false);
                     }}
                     whileHover={{ scale: 1.02 }}

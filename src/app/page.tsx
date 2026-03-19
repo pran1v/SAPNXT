@@ -123,12 +123,12 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section id="hero" className="hero-section hero-grid-bg" style={{
-        minHeight: '90vh',
+        minHeight: 'calc(100vh - var(--nav-height))',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
-        padding: '2rem 0',
+        padding: 'clamp(4rem, 10vh, 8rem) 0 4rem',
       }}>
         {/* Animated floating orbs */}
         <div className="hero-orbs" aria-hidden="true">

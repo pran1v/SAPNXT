@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function PrivacyPolicy() {
     return (
-        <div className="container" style={{ paddingTop: 'calc(var(--nav-height) + 2rem)', paddingBottom: '4rem', maxWidth: '800px' }}>
+        <div className="container" style={{ paddingTop: '4rem', paddingBottom: '4rem', maxWidth: '800px' }}>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
